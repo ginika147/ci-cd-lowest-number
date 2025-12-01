@@ -11,25 +11,18 @@ def find_lowest_number_in_file(input_filename):
         for line in input_file:
             try:
                 num = float(line.strip())
-                if not number_found:
+                if not number_found or num < lowest_number:
                     lowest_number = num
                     number_found = True
-                else:
-                    if num < lowest_number:
-                        lowest_number = num
             except ValueError:
-                continue  # skip lines that aren't numbers
+                continue
 
-    if number_found:
-        return lowest_number
-    else:
-        return "No numbers found in file"
+    return lowest_number if number_found else "No numbers found in file"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     input_filename = sys.argv[1]
     output_filename = sys.argv[2]
-
     result = find_lowest_number_in_file(input_filename)
 
     with open(output_filename, 'w') as output_file:
-        output_file.write(str(result) + "\n")
+        output_file.write(str(result) + "\n" if isinstance(result, float) else result + "\n")
