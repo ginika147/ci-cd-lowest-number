@@ -1,19 +1,44 @@
+# test_find_lowest_number.py
+# StAuth10244: I Ginika Calistus Ezeh, 000932941 certify that this material is my original work.
+
 import unittest
-from find_lowest_number import find_lowest_number_in_list
+import tempfile
+import os
+from find_lowest_number import find_lowest_number_in_file
 
 class TestLowestFinder(unittest.TestCase):
 
+    def create_temp_file(self, contents):
+        temp = tempfile.NamedTemporaryFile(delete=False, mode='w+')
+        temp.write(contents)
+        temp.seek(0)
+        temp.close()
+        return temp.name
+
     def test_all_positive(self):
-        self.assertEqual(find_lowest_number_in_list([20, 11, 55, 3]), 3)
+        filename = self.create_temp_file("20\n11\n55\n3\n")
+        self.assertEqual(find_lowest_number_in_file(filename), 3.0)
+        os.remove(filename)
 
     def test_with_negatives(self):
-        self.assertEqual(find_lowest_number_in_list([-4, -12, 7, 0]), -12)
+        filename = self.create_temp_file("-4\n-12\n7\n0\n")
+        self.assertEqual(find_lowest_number_in_file(filename), -12.0)
+        os.remove(filename)
 
     def test_all_equal(self):
-        self.assertEqual(find_lowest_number_in_list([5, 5, 5]), 5)
+        filename = self.create_temp_file("5\n5\n5\n")
+        self.assertEqual(find_lowest_number_in_file(filename), 5.0)
+        os.remove(filename)
 
     def test_one_element(self):
-        self.assertEqual(find_lowest_number_in_list([99]), 99)
+        filename = self.create_temp_file("99\n")
+        self.assertEqual(find_lowest_number_in_file(filename), 99.0)
+        os.remove(filename)
+
+    def test_empty_file(self):
+        filename = self.create_temp_file("")
+        self.assertEqual(find_lowest_number_in_file(filename), "No numbers found in file")
+        os.remove(filename)
 
 if __name__ == '__main__':
     unittest.main()
