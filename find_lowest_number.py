@@ -3,26 +3,25 @@
 
 import sys
 
-def find_lowest_number_in_file(input_filename):
-    number_found = False
-    lowest_number = None
+input_filename = sys.argv[1]
+output_filename = sys.argv[2]
 
-    with open(input_filename, 'r') as input_file:
-        for line in input_file:
+number_found = False
+
+with open(input_filename, 'r') as input_file:
+    for line in input_file:
+        if number_found == False:
             try:
-                num = float(line.strip())
-                if not number_found or num < lowest_number:
-                    lowest_number = num
-                    number_found = True
+                lowest_number = float(line)
+                number_found = True
             except ValueError:
-                continue
+                break
+        else:
+            if float(line) < lowest_number:
+                lowest_number = float(line)
 
-    return lowest_number if number_found else "No numbers found in file"
-
-if __name__ == "__main__":
-    input_filename = sys.argv[1]
-    output_filename = sys.argv[2]
-    result = find_lowest_number_in_file(input_filename)
-
-    with open(output_filename, 'w') as output_file:
-        output_file.write(str(result) + "\n" if isinstance(result, float) else result + "\n")
+with open(output_filename, 'w') as output_file:
+    if number_found:
+        output_file.write(str(lowest_number) + "\n")
+    else:
+        output_file.write("No numbers found in file\n")
