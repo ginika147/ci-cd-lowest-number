@@ -10,6 +10,7 @@ number_found = False
 
 with open(input_filename, 'r') as input_file:
     for line in input_file:
+        line = line.strip()
         if number_found == False:
             try:
                 lowest_number = float(line)
@@ -17,8 +18,11 @@ with open(input_filename, 'r') as input_file:
             except ValueError:
                 break
         else:
-            if float(line) < lowest_number:
-                lowest_number = float(line)
+            try:
+                if float(line) < lowest_number:
+                    lowest_number = float(line)
+            except ValueError:
+                continue
 
 with open(output_filename, 'w') as output_file:
     if number_found:
